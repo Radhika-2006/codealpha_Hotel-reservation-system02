@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- jsPDF Library for receipt downloads -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  
+  <title>Grand Horizon Hotel Jaipur - Premium Reservation System</title>
+  
+  <!-- Protection: Redirect unauthorized users back to login page -->
+  <script>
+    if (localStorage.getItem("isLoggedIn") !== "true") {
+      window.location.href = "login.html";
+    }
+  </script>
+  
+  <!-- Meta description for basic SEO -->
+  <meta name="description" content="Book your stay at the luxury Grand Horizon Hotel Jaipur. Elegant rooms, modern amenities, and beautiful views await you.">
+  
+  <!-- Link to external stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 1. Header Section with Project Name & Navigation -->
+  <header>
+    <div class="nav-container">
+      <div class="logo">
+        <!-- Logo title: gold text for Grand, white for Horizon -->
+        <h1>Grand <span>Horizon Jaipur</span></h1>
+      </div>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#home" class="active">Home</a></li>
+          <li><a href="#rooms">Rooms</a></li>
+          <li><a href="#availability">Availability</a></li>
+          <li><a href="#booking">Book Now</a></li>
+          <li><a href="#my-bookings">My Bookings</a></li>
+          <li><a href="booking-history.html">Booking History</a></li>
+          <li><a href="#location">Location</a></li>
+          <li><button id="logoutBtn" style="background: none; border: 1px solid var(--accent-gold); color: var(--accent-gold); padding: 0.35rem 0.85rem; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; margin-left: 0.5rem; transition: all 0.3s;" onmouseover="this.style.background='var(--accent-gold)'; this.style.color='#000';" onmouseout="this.style.background='none'; this.style.color='var(--accent-gold)';" onclick="logoutUser()">Logout</button></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- 2. Home Section (Hero section with descriptions) -->
+    <section id="home" class="hero">
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <h2>Experience <span>Luxury</span> Redefined</h2>
+        <p>Indulge in a world of elegance, comfort, and premium hospitality. Discover our curated sanctuaries designed to make your stay unforgettable.</p>
+        <a href="#rooms" class="btn-primary">Explore Rooms</a>
+      </div>
+    </section>
+
+    <!-- 3. Rooms Section (Single Room, Double Room, Suite Room Cards) -->
+    <section id="rooms" class="section">
+      <div class="section-header">
+        <h2>Our Accommodations</h2>
+        <p>Choose the perfect room tailored for your absolute comfort</p>
+      </div>
+
+      <div class="rooms-grid">
+        <!-- Room 1: Single Room Card -->
+        <article class="room-card" id="room-card-single">
+          <!-- Room Gallery Slider -->
+          <div class="room-img-container">
+            <div class="slider-wrapper" id="slider-single">
+              <img src="images/single_1.png" alt="Single Room - Bed View" class="active">
+              <img src="images/single_2.png" alt="Single Room - Bathroom View">
+              <img src="images/single_3.png" alt="Single Room - Balcony View">
+              <img src="images/single_4.png" alt="Single Room - Room View">
+              <img src="images/single_5.png" alt="Single Room - Lounge View">
+            </div>
+            <!-- Slider Buttons -->
+            <button class="slider-btn prev-btn" onclick="changeSlide('single', -1)">&lt;</button>
+            <button class="slider-btn next-btn" onclick="changeSlide('single', 1)">&gt;</button>
+            <!-- Fullscreen Button -->
+            <button class="fullscreen-btn" onclick="openFullscreen('single')">🔍</button>
+            <div class="room-price-badge">$120 / Night</div>
+          </div>
+          
+          <div class="room-info">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem;">
+              <h3>Single Room</h3>
+              <span class="room-avail-badge avail" id="avail-badge-single">5 Rooms Left</span>
+            </div>
+
+            <!-- Room Ratings & Reviews -->
+            <div class="room-rating-container" style="margin-top: 0.5rem; margin-bottom: 0.75rem; font-size: 0.9rem; color: var(--text-white);">
+              <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem; flex-wrap: wrap;">
+                <span style="color: #fbbf24; font-size: 1.1rem; letter-spacing: 1px;">★★★★☆</span>
+                <strong style="font-size: 0.95rem; font-family: var(--font-heading);">4.5/5</strong>
+                <span style="color: var(--text-muted); font-size: 0.85rem;">(128 Reviews)</span>
+              </div>
+              <div style="font-size: 0.85rem; color: #a7f3d0; font-weight: 500; display: flex; align-items: center; gap: 0.35rem;">
+                <span>👍</span> <span>92% guests recommend this room</span>
+              </div>
+            </div>
+            
+            <p>Perfect for solo travelers and business trips. Enjoy a comfortable queen-size bed, workstation, smart TV, and high-speed Wi-Fi in a thoughtfully optimized layout.</p>
+            
+            <!-- Room Details / Specifications -->
+            <div class="room-specs">
+              <span><strong>Size:</strong> 250 sq ft</span>
+              <span><strong>Bed:</strong> Queen Bed</span>
+              <span><strong>Max Guests:</strong> 1 Guest</span>
+              <span><strong>Floor:</strong> 2nd Floor</span>
+              <span class="room-spec-view"><strong>View:</strong> Courtyard View</span>
+            </div>
+
+            <!-- Amenities Badges -->
+            <div style="margin-top: 1rem; margin-bottom: 1.5rem;">
+              <span style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase; color: var(--text-white); display: block; margin-bottom: 0.5rem;">Room Amenities</span>
+              <div class="amenities-tags-grid">
+                <span class="amenity-tag">WiFi</span>
+                <span class="amenity-tag">AC</span>
+                <span class="amenity-tag">TV</span>
+                <span class="amenity-tag">Bathroom</span>
+                <span class="amenity-tag">Parking</span>
+              </div>
+              <button class="btn-secondary view-breakfast-btn" data-room="single" style="margin-top: 0.75rem; width: 100%; font-size: 0.8rem; padding: 0.5rem 1rem;">View Breakfast Menu</button>
+            </div>
+
+            <button class="btn-secondary select-room-btn" data-room="single">Book This Room</button>
+          </div>
+        </article>
+
+        <!-- Room 2: Double Room Card -->
+        <article class="room-card" id="room-card-double">
+          <!-- Room Gallery Slider -->
+          <div class="room-img-container">
+            <div class="slider-wrapper" id="slider-double">
+              <img src="images/double_1.png" alt="Double Room - Bed View" class="active">
+              <img src="images/double_2.png" alt="Double Room - Bathroom View">
+              <img src="images/double_3.png" alt="Double Room - Balcony View">
+              <img src="images/double_4.png" alt="Double Room - Room View">
+              <img src="images/double_5.png" alt="Double Room - Lounge View">
+            </div>
+            <!-- Slider Buttons -->
+            <button class="slider-btn prev-btn" onclick="changeSlide('double', -1)">&lt;</button>
+            <button class="slider-btn next-btn" onclick="changeSlide('double', 1)">&gt;</button>
+            <!-- Fullscreen Button -->
+            <button class="fullscreen-btn" onclick="openFullscreen('double')">🔍</button>
+            <div class="room-price-badge">$180 / Night</div>
+          </div>
+          
+          <div class="room-info">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem;">
+              <h3>Double Room</h3>
+              <span class="room-avail-badge avail" id="avail-badge-double">4 Rooms Left</span>
+            </div>
+
+            <!-- Room Ratings & Reviews -->
+            <div class="room-rating-container" style="margin-top: 0.5rem; margin-bottom: 0.75rem; font-size: 0.9rem; color: var(--text-white);">
+              <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem; flex-wrap: wrap;">
+                <span style="color: #fbbf24; font-size: 1.1rem; letter-spacing: 1px;">★★★★★</span>
+                <strong style="font-size: 0.95rem; font-family: var(--font-heading);">4.7/5</strong>
+                <span style="color: var(--text-muted); font-size: 0.85rem;">(214 Reviews)</span>
+              </div>
+              <div style="font-size: 0.85rem; color: #a7f3d0; font-weight: 500; display: flex; align-items: center; gap: 0.35rem;">
+                <span>👍</span> <span>95% guests recommend this room</span>
+              </div>
+            </div>
+            
+            <p>Designed for couples or friends sharing a stay. Equipped with two deluxe twin beds, a private balcony, a modern minibar, and premium luxury toiletries.</p>
+            
+            <!-- Room Details / Specifications -->
+            <div class="room-specs">
+              <span><strong>Size:</strong> 400 sq ft</span>
+              <span><strong>Bed:</strong> 2 Twin Beds</span>
+              <span><strong>Max Guests:</strong> 2 Guests</span>
+              <span><strong>Floor:</strong> 4th Floor</span>
+              <span class="room-spec-view"><strong>View:</strong> Skyline View</span>
+            </div>
+
+            <!-- Amenities Badges -->
+            <div style="margin-top: 1rem; margin-bottom: 1.5rem;">
+              <span style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase; color: var(--text-white); display: block; margin-bottom: 0.5rem;">Room Amenities</span>
+              <div class="amenities-tags-grid">
+                <span class="amenity-tag">WiFi</span>
+                <span class="amenity-tag">AC</span>
+                <span class="amenity-tag">TV</span>
+                <span class="amenity-tag">Bathroom</span>
+                <span class="amenity-tag">Balcony</span>
+                <span class="amenity-tag">Parking</span>
+                <span class="amenity-tag">Swimming Pool</span>
+                <span class="amenity-tag">Restaurant</span>
+              </div>
+              <button class="btn-secondary view-breakfast-btn" data-room="double" style="margin-top: 0.75rem; width: 100%; font-size: 0.8rem; padding: 0.5rem 1rem;">View Breakfast Menu</button>
+            </div>
+
+            <button class="btn-secondary select-room-btn" data-room="double">Book This Room</button>
+          </div>
+        </article>
+
+        <!-- Room 3: Suite Room Card -->
+        <article class="room-card" id="room-card-suite">
+          <!-- Room Gallery Slider -->
+          <div class="room-img-container">
+            <div class="slider-wrapper" id="slider-suite">
+              <img src="images/suite_1.png" alt="Suite Room - Bed View" class="active">
+              <img src="images/suite_2.png" alt="Suite Room - Lounge View">
+              <img src="images/suite_3.png" alt="Suite Room - Bathroom View">
+              <img src="images/suite_4.png" alt="Suite Room - View from Balcony">
+              <img src="images/suite_5.png" alt="Suite Room - Full View">
+            </div>
+            <!-- Slider Buttons -->
+            <button class="slider-btn prev-btn" onclick="changeSlide('suite', -1)">&lt;</button>
+            <button class="slider-btn next-btn" onclick="changeSlide('suite', 1)">&gt;</button>
+            <!-- Fullscreen Button -->
+            <button class="fullscreen-btn" onclick="openFullscreen('suite')">🔍</button>
+            <div class="room-price-badge">$320 / Night</div>
+          </div>
+          
+          <div class="room-info">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem;">
+              <h3>Suite Room</h3>
+              <span class="room-avail-badge avail" id="avail-badge-suite">2 Rooms Left</span>
+            </div>
+
+            <!-- Room Ratings & Reviews -->
+            <div class="room-rating-container" style="margin-top: 0.5rem; margin-bottom: 0.75rem; font-size: 0.9rem; color: var(--text-white);">
+              <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem; flex-wrap: wrap;">
+                <span style="color: #fbbf24; font-size: 1.1rem; letter-spacing: 1px;">★★★★★</span>
+                <strong style="font-size: 0.95rem; font-family: var(--font-heading);">4.9/5</strong>
+                <span style="color: var(--text-muted); font-size: 0.85rem;">(356 Reviews)</span>
+              </div>
+              <div style="font-size: 0.85rem; color: #a7f3d0; font-weight: 500; display: flex; align-items: center; gap: 0.35rem;">
+                <span>👍</span> <span>98% guests recommend this room</span>
+              </div>
+            </div>
+            
+            <p>Experience the ultimate heights of luxury. Features a king-size bed, a separate elegant living lounge, panoramic skyline views, a jacuzzi, and 24/7 personalized butler service.</p>
+            
+            <!-- Room Details / Specifications -->
+            <div class="room-specs">
+              <span><strong>Size:</strong> 650 sq ft</span>
+              <span><strong>Bed:</strong> King Bed</span>
+              <span><strong>Max Guests:</strong> 4 Guests</span>
+              <span><strong>Floor:</strong> Penthouse Level</span>
+              <span class="room-spec-view"><strong>View:</strong> Ocean Sunset View</span>
+            </div>
+
+            <!-- Amenities Badges -->
+            <div style="margin-top: 1rem; margin-bottom: 1.5rem;">
+              <span style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase; color: var(--text-white); display: block; margin-bottom: 0.5rem;">Room Amenities</span>
+              <div class="amenities-tags-grid">
+                <span class="amenity-tag">WiFi</span>
+                <span class="amenity-tag">AC</span>
+                <span class="amenity-tag">TV</span>
+                <span class="amenity-tag">Bathroom</span>
+                <span class="amenity-tag">Balcony</span>
+                <span class="amenity-tag">Parking</span>
+                <span class="amenity-tag">Swimming Pool</span>
+                <span class="amenity-tag">Gym</span>
+                <span class="amenity-tag">Restaurant</span>
+              </div>
+              <button class="btn-secondary view-breakfast-btn" data-room="suite" style="margin-top: 0.75rem; width: 100%; font-size: 0.8rem; padding: 0.5rem 1rem;">View Breakfast Menu</button>
+            </div>
+
+            <button class="btn-secondary select-room-btn" data-room="suite">Book This Room</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Room Availability Checker Section -->
+    <section id="availability" class="section booking-section" style="border-bottom: 1px solid var(--border-color); padding-bottom: 4rem;">
+      <div class="section-header">
+        <h2>Check Room Availability</h2>
+        <p>Ensure your preferred room is vacant before making a reservation</p>
+      </div>
+
+      <div class="booking-container">
+        <form id="availabilityForm" class="booking-form">
+          <div class="form-group">
+            <label for="availRoomType">Select Room Type</label>
+            <select id="availRoomType" required>
+              <option value="" disabled selected>Choose a room...</option>
+              <option value="single">Single Room - $120/night</option>
+              <option value="double">Double Room - $180/night</option>
+              <option value="suite">Suite Room - $320/night</option>
+            </select>
+          </div>
+
+          <div class="form-group-row">
+            <div class="form-group">
+              <label for="availCheckInDate">Check-In Date</label>
+              <input type="date" id="availCheckInDate" required>
+            </div>
+            <div class="form-group">
+              <label for="availCheckOutDate">Check-Out Date</label>
+              <input type="date" id="availCheckOutDate" required>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary">Check Availability</button>
+        </form>
+        
+        <!-- Element to show availability status -->
+        <div id="availabilityResult" style="margin-top: 1.5rem; text-align: center; font-size: 1.2rem; font-weight: 600; min-height: 2rem;"></div>
+      </div>
+    </section>
+
+    <!-- 4. Booking Form Section -->
+    <section id="booking" class="section booking-section">
+      <div class="section-header">
+        <h2>Reserve Your Stay</h2>
+        <p>Complete the form below to secure your sanctuary today</p>
+      </div>
+
+      <div class="booking-container">
+        <!-- The form utilizes JavaScript submit handler to prevent reload and output confirmation -->
+        <form id="reservationForm" class="booking-form">
+          <!-- Customer Name Input -->
+          <div class="form-group">
+            <label for="customerName">Full Name</label>
+            <input type="text" id="customerName" placeholder="Enter your full name" required>
+          </div>
+
+          <!-- Customer Phone Input -->
+          <div class="form-group">
+            <label for="phoneNumber">Phone Number</label>
+            <input type="tel" id="phoneNumber" placeholder="e.g., +1 234 567 8900" required>
+          </div>
+
+          <!-- Room Type Select Dropdown -->
+          <div class="form-group">
+            <label for="roomType">Select Room Type</label>
+            <select id="roomType" required>
+              <option value="" disabled selected>Choose a room...</option>
+              <option value="single">Single Room - $120/night</option>
+              <option value="double">Double Room - $180/night</option>
+              <option value="suite">Suite Room - $320/night</option>
+            </select>
+          </div>
+
+          <!-- Check-in & Check-out Date Group -->
+          <div class="form-group-row">
+            <div class="form-group">
+              <label for="checkInDate">Check-In Date</label>
+              <input type="date" id="checkInDate" required>
+            </div>
+            <div class="form-group">
+              <label for="checkOutDate">Check-Out Date</label>
+              <input type="date" id="checkOutDate" required>
+            </div>
+          </div>
+
+          <!-- 5. Form Actions (Book Now & Reset Buttons) -->
+          <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+            <button type="submit" class="btn-primary" style="flex: 2; margin-top: 0;">Book Now</button>
+            <button type="reset" id="resetFormBtn" class="btn-secondary" style="flex: 1; padding: 0.9rem 1.5rem; text-transform: uppercase; font-size: 0.9rem; font-weight: 600; letter-spacing: 1px; margin-bottom: 0;">Reset</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 6. Empty Section to Show Booking Confirmation Later -->
+    <section id="confirmation" class="section confirmation-section"></section>
+
+    <!-- 7. My Bookings Section -->
+    <section id="my-bookings" class="section" style="border-top: 1px solid var(--border-color); padding-top: 6rem;">
+      <div class="section-header">
+        <h2>My Bookings</h2>
+        <p>View, search, or cancel your luxury reservations</p>
+      </div>
+
+      <!-- Search, Filter & Sort Controls Container -->
+      <div style="max-width: 900px; margin: 0 auto 3rem auto; display: flex; flex-direction: column; gap: 1.5rem; background: var(--glass-bg); padding: 2rem; border-radius: 8px; border: 1px solid var(--border-color);">
+        <!-- Search bar -->
+        <div style="display: flex; gap: 1rem;">
+          <input type="text" id="searchQuery" placeholder="Search by Booking ID or Phone Number..." style="flex-grow: 1; background-color: rgba(11, 15, 25, 0.6); border: 1px solid var(--border-color); border-radius: 4px; padding: 0.8rem 1rem; color: var(--text-white); font-family: var(--font-body); font-size: 0.95rem; outline: none; transition: border-color 0.3s; border: 1px solid var(--border-color);">
+          <button id="searchBtn" class="btn-primary" style="padding: 0.8rem 1.5rem; margin-top: 0; min-width: 120px;">Search</button>
+        </div>
+        
+        <!-- Filter & Sort controls -->
+        <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+          <!-- Filter by Room Type -->
+          <div style="flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 0.5rem;">
+            <label for="filterRoomType" style="font-size: 0.85rem; text-transform: uppercase; color: var(--text-white); font-weight: 500; letter-spacing: 0.5px;">Filter by Room Type</label>
+            <select id="filterRoomType" style="background-color: rgba(11, 15, 25, 0.6); border: 1px solid var(--border-color); border-radius: 4px; padding: 0.6rem 1rem; color: var(--text-white); font-family: var(--font-body); outline: none;">
+              <option value="all">All Rooms</option>
+              <option value="single">Single Room</option>
+              <option value="double">Double Room</option>
+              <option value="suite">Suite Room</option>
+            </select>
+          </div>
+          
+          <!-- Sort Bookings -->
+          <div style="flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 0.5rem;">
+            <label for="sortBookings" style="font-size: 0.85rem; text-transform: uppercase; color: var(--text-white); font-weight: 500; letter-spacing: 0.5px;">Sort Bookings By</label>
+            <select id="sortBookings" style="background-color: rgba(11, 15, 25, 0.6); border: 1px solid var(--border-color); border-radius: 4px; padding: 0.6rem 1rem; color: var(--text-white); font-family: var(--font-body); outline: none;">
+              <option value="checkin-desc">Check-In Date (Newest first)</option>
+              <option value="checkin-asc">Check-In Date (Oldest first)</option>
+              <option value="total-desc">Total Amount (Highest first)</option>
+              <option value="total-asc">Total Amount (Lowest first)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bookings List Container -->
+      <div id="bookingsList" class="rooms-grid">
+        <!-- Dynamically filled by JavaScript. Shows default empty message when no bookings exist. -->
+      </div>
+    </section>
+
+    <!-- 8. Hotel Location Section -->
+    <section id="location" class="section" style="border-top: 1px solid var(--border-color); padding-top: 6rem; padding-bottom: 6rem;">
+      <div class="section-header">
+        <h2>Location & Contact</h2>
+        <p>Find us at the heart of luxury and convenience</p>
+      </div>
+
+      <div class="booking-container" style="text-align: center; display: flex; flex-direction: column; gap: 1.5rem; background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--border-color); border-radius: 12px; padding: 3rem 2.5rem; max-width: 650px; margin: 0 auto;">
+        <h3 style="font-size: 1.6rem; color: var(--accent-gold); margin-bottom: 0.5rem;">Grand Horizon Hotel Jaipur</h3>
+        
+        <p style="font-size: 1.05rem; color: var(--text-white);">
+          <strong>Address:</strong><br>
+          Grand Horizon Hotel,<br>
+          Near Jal Mahal, Amer Road,<br>
+          Jaipur, Rajasthan – 302002
+        </p>
+
+        <p style="font-size: 1.05rem; color: var(--text-white);">
+          <strong>Phone:</strong><br>
+          +91 98765 43210
+        </p>
+
+        <p style="font-size: 1.05rem; color: var(--text-white);">
+          <strong>Email:</strong><br>
+          info@grandhorizonjaipur.com
+        </p>
+
+        <a href="https://www.google.com/maps?q=Jal+Mahal+Jaipur" target="_blank" class="btn-primary" style="margin-top: 1rem; display: inline-block; width: auto; align-self: center;">View on Google Maps</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Fullscreen Gallery Modal -->
+  <div id="galleryModal" class="gallery-modal" onclick="closeFullscreen()">
+    <span class="modal-close-btn" onclick="closeFullscreen()">&times;</span>
+    <img id="modalImage" class="modal-img-content" src="" alt="Fullscreen Room Preview">
+  </div>
+
+  <!-- Breakfast Menu Modal -->
+  <div id="breakfastModal" class="gallery-modal" onclick="closeBreakfastModal()">
+    <div class="booking-container" style="max-width: 500px; margin: auto; position: relative; background: var(--glass-bg); backdrop-filter: blur(20px); border: 2px solid var(--accent-gold); border-radius: 12px; padding: 2.5rem; text-align: left;" onclick="event.stopPropagation()">
+      <span class="modal-close-btn" style="top: 1rem; right: 1.5rem; font-size: 2rem;" onclick="closeBreakfastModal()">&times;</span>
+      
+      <h3 style="font-size: 1.8rem; color: var(--accent-gold); text-align: center; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">Breakfast Menu</h3>
+      
+      <!-- Continental Breakfast -->
+      <div style="margin-bottom: 1.25rem;">
+        <h4 style="color: var(--text-white); font-size: 1.1rem; margin-bottom: 0.4rem;">Continental Breakfast</h4>
+        <ul style="list-style: none; padding-left: 0.5rem; font-size: 0.95rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 0.25rem;">
+          <li>🥐 Croissant</li>
+          <li>🍞 Bread Butter</li>
+          <li>☕ Coffee</li>
+        </ul>
+      </div>
+
+      <!-- Indian Breakfast -->
+      <div style="margin-bottom: 1.25rem;">
+        <h4 style="color: var(--text-white); font-size: 1.1rem; margin-bottom: 0.4rem;">Indian Breakfast</h4>
+        <ul style="list-style: none; padding-left: 0.5rem; font-size: 0.95rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 0.25rem;">
+          <li>🫓 Aloo Paratha</li>
+          <li>🍚 Poha</li>
+          <li>🍘 Idli</li>
+          <li>🍵 Tea</li>
+        </ul>
+      </div>
+
+      <!-- Premium Breakfast -->
+      <div style="margin-bottom: 1.5rem;">
+        <h4 style="color: var(--text-white); font-size: 1.1rem; margin-bottom: 0.4rem;">Premium Breakfast</h4>
+        <ul style="list-style: none; padding-left: 0.5rem; font-size: 0.95rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 0.25rem;">
+          <li>🥞 Pancakes</li>
+          <li>🍳 Omelette</li>
+          <li>🍎 Fruits</li>
+          <li>🥤 Juice</li>
+        </ul>
+      </div>
+
+      <!-- Details & Timing -->
+      <div style="border-top: 1px solid var(--border-color); padding-top: 1rem; font-size: 0.95rem; color: var(--text-white); display: flex; flex-direction: column; gap: 0.4rem;">
+        <p><strong>Timing:</strong> 7:00 AM &ndash; 10:30 AM daily</p>
+        <p><strong>Pricing:</strong> <span id="breakfastPricing" style="color: var(--accent-gold); font-weight: 600;">Complimentary</span></p>
+      </div>
+    </div>
+  </div>
+  </main>
+
+  <!-- Footer Section -->
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2026 Grand Horizon Hotel Jaipur. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Link to external JS logic -->
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- jsPDF Library for receipt downloads -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  
+  <title>Booking History | Grand Horizon Hotel Jaipur</title>
+  
+  <!-- Protection: Redirect unauthorized users back to login page -->
+  <script>
+    if (localStorage.getItem("isLoggedIn") !== "true") {
+      window.location.href = "login.html";
+    }
+  </script>
+  
+  <!-- Meta description for basic SEO -->
+  <meta name="description" content="View your past and cancelled stays at the luxury Grand Horizon Hotel Jaipur.">
+  
+  <!-- Link to external stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 1. Header Section with Project Name & Navigation -->
+  <header>
+    <div class="nav-container">
+      <div class="logo">
+        <h1>Grand <span>Horizon Jaipur</span></h1>
+      </div>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html#home">Home</a></li>
+          <li><a href="index.html#rooms">Rooms</a></li>
+          <li><a href="index.html#availability">Availability</a></li>
+          <li><a href="index.html#booking">Book Now</a></li>
+          <li><a href="index.html#my-bookings">My Bookings</a></li>
+          <li><a href="#" class="active">Booking History</a></li>
+          <li><a href="index.html#location">Location</a></li>
+          <li><button id="logoutBtn" style="background: none; border: 1px solid var(--accent-gold); color: var(--accent-gold); padding: 0.35rem 0.85rem; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-weight: 600; margin-left: 0.5rem; transition: all 0.3s;" onmouseover="this.style.background='var(--accent-gold)'; this.style.color='#000';" onmouseout="this.style.background='none'; this.style.color='var(--accent-gold)';" onclick="logoutUser()">Logout</button></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main style="padding-top: 100px; min-height: calc(100vh - 120px);">
+    <section class="section">
+      <div class="section-header">
+        <h2>Booking History</h2>
+        <p>Review your completed and cancelled stays at Grand Horizon Hotel Jaipur</p>
+      </div>
+
+      <!-- Statistics Dashboard Section -->
+      <div class="container" style="max-width: 1200px; margin: 0 auto 2.5rem auto; padding: 0 1.5rem;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+          <!-- Total History Bookings Card -->
+          <div style="background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.75rem; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">📖</div>
+            <h4 style="color: var(--accent-gold); font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; font-family: var(--font-heading);">Total History</h4>
+            <span id="stat-total" style="font-size: 2rem; font-weight: 700; color: var(--text-white);">0</span>
+          </div>
+
+          <!-- Completed Stays Card -->
+          <div style="background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.75rem; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">✅</div>
+            <h4 style="color: var(--accent-gold); font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; font-family: var(--font-heading);">Completed Stays</h4>
+            <span id="stat-completed" style="font-size: 2rem; font-weight: 700; color: #4ade80;">0</span>
+          </div>
+
+          <!-- Cancelled Bookings Card -->
+          <div style="background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.75rem; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">❌</div>
+            <h4 style="color: var(--accent-gold); font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; font-family: var(--font-heading);">Cancelled Bookings</h4>
+            <span id="stat-cancelled" style="font-size: 2rem; font-weight: 700; color: #ff6b6b;">0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls Panel (Search & Filter) -->
+      <div class="container" style="max-width: 1200px; margin: 0 auto 2rem auto; padding: 0 1.5rem;">
+        <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: space-between; align-items: center; background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--border-color); padding: 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+          
+          <!-- Search Box -->
+          <div style="flex: 1; min-width: 280px; position: relative;">
+            <input type="text" id="searchHistory" placeholder="Search by Booking ID, Guest Name or Phone..." style="width: 100%; padding: 0.75rem 1rem; background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-white); font-size: 0.95rem; outline: none; transition: border-color 0.3s;" onfocus="this.style.borderColor='var(--accent-gold)'" onblur="this.style.borderColor='var(--border-color)'">
+          </div>
+
+          <!-- Filter Dropdown -->
+          <div style="min-width: 200px;">
+            <select id="filterStatus" style="width: 100%; padding: 0.75rem 1rem; background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-white); font-size: 0.95rem; outline: none; cursor: pointer;">
+              <option value="all">All History</option>
+              <option value="Completed">Completed</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- History Cards Container -->
+      <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;">
+        <div id="historyList" class="bookings-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem;">
+          <!-- Cards will be dynamically injected here -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer Section -->
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2026 Grand Horizon Hotel Jaipur. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Link to external JS logic for Booking History -->
+  <script src="history.js"></script>
+</body>
+</html>
